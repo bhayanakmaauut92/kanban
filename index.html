@@ -374,6 +374,30 @@ body {
 </head>
 <body>
 
+<div id="lockOverlay" style="position:fixed;inset:0;z-index:9999;background:var(--surface-soft);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+  <div style="font-size:32px;font-weight:600;color:var(--ink);letter-spacing:-0.5px;">✦ Kanban</div>
+  <div style="color:var(--slate);font-size:14px;">Password required</div>
+  <input id="pwInput" type="password" style="padding:8px 14px;border-radius:8px;border:1px solid var(--hairline-strong);font-size:16px;font-family:inherit;width:240px;text-align:center;outline:none;background:var(--canvas);color:var(--charcoal);" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPw()">
+  <button onclick="checkPw()" style="padding:8px 24px;border-radius:8px;border:none;background:var(--primary);color:white;font:500 14px Inter;cursor:pointer;">Unlock</button>
+  <div id="pwError" style="color:#c0392b;font-size:13px;display:none;">Wrong password</div>
+</div>
+
+<script>
+function checkPw() {
+  const pw = document.getElementById('pwInput').value;
+  if (pw === 'entirelyinhouse') {
+    document.getElementById('lockOverlay').style.display = 'none';
+    sessionStorage.setItem('kanban_unlocked', '1');
+  } else {
+    document.getElementById('pwError').style.display = 'block';
+    setTimeout(() => document.getElementById('pwError').style.display = 'none', 2000);
+  }
+}
+if (sessionStorage.getItem('kanban_unlocked')) {
+  document.getElementById('lockOverlay').style.display = 'none';
+}
+</script>
+
 <div class="topbar">
   <div class="brand"><span class="glyph">✦</span> Workspace</div>
   <div class="crumbs">🏠 Projects / <strong>Kanban</strong></div>
